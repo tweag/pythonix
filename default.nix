@@ -1,5 +1,9 @@
 {
-  pkgs ? (import <nixpkgs> {}).pkgs
+  nixpkgs ? fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/1badc6db75d797f53c77d18d89c4eb8616d205cc.tar.gz";
+    sha256 = "0rwrlfgwhb839r1vs08vbs80l99c2m7n7vvjb80kihvb3fy10wkb";
+  },
+  pkgs ? (import nixpkgs {}).pkgs
 }:
 
 with pkgs;

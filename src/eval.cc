@@ -25,8 +25,9 @@ static PyObject *_eval(const char *expression, PyObject *vars) {
   if (!staticEnv) {
     return nullptr;
   }
+  auto staticEnvPointer = std::make_shared<nix::StaticEnv>(*staticEnv);
 
-  auto e = state.parseExprFromString(expression, ".", *staticEnv);
+  auto e = state.parseExprFromString(expression, ".", staticEnvPointer);
   nix::Value v;
   e->eval(state, *env, v);
 
@@ -39,6 +40,8 @@ static PyObject *_eval(const char *expression, PyObject *vars) {
 PyObject *eval(PyObject *self, PyObject *args, PyObject *keywds) {
   const char *expression = nullptr;
   PyObject *vars = nullptr;
+
+  nix::initLibStore();
 
   const char *kwlist[] = {"expression", "vars", nullptr};
 
